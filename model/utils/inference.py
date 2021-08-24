@@ -2,6 +2,7 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 
+# test
 
 def cuda_dist(x, y):
     x = torch.from_numpy(x).cuda()
