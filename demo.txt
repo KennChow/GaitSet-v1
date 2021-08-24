@@ -1,0 +1,110 @@
+import torch
+import torch.nn.functional as F
+import numpy as np
+======555556
+
+def cuda_dist(x, y):
+    x = torch.from_numpy(x).cuda()
+    y = torch.from_numpy(y).cuda()
+    dist = torch.sum(x ** 2, 1).unsqueeze(1) + torch.sum(y ** 2, 1).unsqueeze(
+        1).transpose(0, 1) - 2 * torch.matmul(x, y.transpose(0, 1))
+    dist = torch.sqrt(F.relu(dist))
+    return dist
+
+
+def evaluation(data, config):
+    dataset = config['dataset'].split('-')[0]
+    feature, view, seq_type, label = data  # feature wei tezhengxiangliang
+    # print(feature.shape)  # 5485*15872
+    # print(type(feature))
+    # print(feature)
+    label = np.array(label)
+    view_list = list(set(view))
+    view_list.sort()
+    view_num = len(view_list)
+    sample_num = len(feature)
+    print("sample_num", end=" ")
+    print(sample_num)  # 5485
+
+    probe_seq_dict = {'CASIA': [['nm-05', 'nm-06'], ['bg-01', 'bg-02'], ['cl-01', 'cl-02']],
+                      'OUMVLP': [['00']]}
+    gallery_seq_dict = {'CASIA': [['nm-01', 'nm-02', 'nm-03', 'nm-04']],
+                        'OUMVLP': [['01']]}
+
+    num_rank = 5
+    acc = np.zeros(  [   len(probe_seq_dict[dataset]), view_num, view_num, num_rank  ]    )
+    print("len(probe_seq_dict[dataset]):" + str(len(probe_seq_dict[dataset]) )  )  # 3 ji ['nm-05', 'nm-06'], ['bg-01', 'bg-02'], ['cl-01', 'cl-02']
+    print("view_num:" + str(view_num))  # 11
+    print("num_rank" + str(num_rank))  # 5
+    # print()
+    for (p, probe_seq) in enumerate(probe_seq_dict[dataset]):
+        # print("----1-----")
+        # print(p)  # 0 1
+        # print(probe_seq)  # ['nm-05', 'nm-06']  //   ['bg-01', 'bg-02']
+
+        for gallery_seq in gallery_seq_dict[dataset]:
+            # print("----2-----")
+            # print(gallery_seq)  # ['nm-01', 'nm-02', 'nm-03', 'nm-04']  //   ['nm-01', 'nm-02', 'nm-03', 'nm-04']
+
+            for (v1, probe_view) in enumerate(view_list):
+                # print("----3-----")
+                # print(v1)  # 0 1 2...
+                # print(probe_view)  # 000 018 036...
+
+                for (v2, gallery_view) in enumerate(view_list):
+                    # print("----4-----")
+                    # print(v2)  # 0 1 2...
+                    # print(gallery_view)  # 000 018 036...
+
+                    # codes above work to iter, down to calculate the distance
+
+                    gseq_mask = np.isin(seq_type, gallery_seq) & np.isin(view, [gallery_view])
+                    # print("gseq_mask",end=" ")
+                    # print(gseq_mask)
+                    gallery_x = feature[gseq_mask, :]  # 2-D metric
+                    # print("gallery_x.shape", end=" ")
+                    # print(gallery_x.shape)  # 200*15872
+                    # print("gallery_x", end=" ")
+                    # print(gallery_x)
+                    gallery_y = label[gseq_mask]  # 1-D list
+                    # print("gallery_y.shape", end=" ")
+                    # print(gallery_y.shape)  # 200,
+                    # print("gallery_y", end=" ")
+                    # print(gallery_y)
+
+                    pseq_mask = np.isin(seq_type, probe_seq) & np.isin(view, [probe_view])
+                    # print("pseq_mask", end=" ")
+                    # print(pseq_mask)
+                    probe_x = feature[pseq_mask, :]  # 2-D metric
+                    # print("probe_x.shape", end=" ")
+                    # print(probe_x.shape)  # 100*15872
+                    # print("probe_x", end=" ")
+                    # print(probe_x)
+                    probe_y = label[pseq_mask]  # 1-D list
+                    # print("probe_y.shape", end=" ")
+                    # print(probe_y.shape)  # 100,
+                    # print("probe_y", end=" ")
+                    # print(probe_y)
+
+                    dist = cuda_dist(probe_x, gallery_x)  # tensor
+                    # print(dist.shape) # 100*200
+                    # print(dist)
+                    idx = dist.sort(1)[1].cpu().numpy()
+                    print(idx)
+                    print(idx.shape)  # 100*200
+                    #                n行1列                              n行5列
+                    a = np.reshape(probe_y, [-1, 1]) == gallery_y[  idx[:, 0:num_rank]  ]
+                    b = np.cumsum(a, 1)  # axis = 1
+                    c = np.sum(b > 0, 0)  # axis = 0
+                    print("dist.shape[0]:")
+                    print(dist.shape[0])
+                    acc[p, v1, v2, :] = np.round(c * 100 / dist.shape[0], 2)
+                    # acc[p, v1, v2, :] = np.round(          # 自定义行 1列
+                    #     np.sum(np.cumsum(np.reshape(probe_y, [-1, 1]) == gallery_y[idx[:, 0:num_rank]], 1) > 0,
+                    #            0) * 100 / dist.shape[0], 2)
+                    print(acc[p, v1, v2, :])  # [80.82.85.86.90.]
+                    print(acc[p, v1, v2, :].shape)  # 5
+
+    return acc
+
+# 2333333
