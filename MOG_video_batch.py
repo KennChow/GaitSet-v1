@@ -56,7 +56,7 @@ def MOG(path):  # data_video/125-nm-04-270.mp4
         v_seq_type = video_name[4:9]  # nm-01
         v_view = video_name[10:13]  # 072
         # v_data = 'data/' + v_lable + '/' + v_seq_type + '/' + v_view + '/'  # data/125/nm-01/072/
-        out_path = 'sil_test/' + v_lable + '/' + v_seq_type + '/' + v_view + '/'  # out/125/nm-01/072/
+        out_path = 'data_frame/' + v_lable + '/' + v_seq_type + '/' + v_view + '/'  # out/125/nm-01/072/
         mkdir(out_path)
         cv2.imwrite(out_path + str(cnt) + '.jpg', img)
 
