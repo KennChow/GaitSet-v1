@@ -13,4 +13,4 @@ for i in id_list:
     mog.MOG(path)
 
 # 裁剪
-##
+#
