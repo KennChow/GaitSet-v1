@@ -2,7 +2,10 @@ conf = {
     "WORK_PATH": "./work",
     "CUDA_VISIBLE_DEVICES": "0,1,2,3",
     "data": {
-        'dataset_path': "/home/projects/output2",
+        # 'dataset_path': "/home/projects/output2",
+        # 'dataset_path': "/home/zc/Projects/GaitSet/home/projects/output",
+        # 'dataset_path': "/home/zc/Projects/GaitSet/output",
+        'dataset_path': "/workspace/projects/GaitSet/output",
         'resolution': '64',
         'dataset': 'CASIA-B',
         # In CASIA-B, data of subject #5 is incomplete.
@@ -13,7 +16,7 @@ conf = {
         'pid_shuffle': False,
     },
     "gallery_data": {
-        'dataset_path': "/home/projects/data_test",
+        'dataset_path': "/workspace/projects/GaitSet/data_gallery",
         'resolution': '64',
         'dataset': 'CASIA-B',
         # In CASIA-B, data of subject #5 is incomplete.
@@ -23,7 +26,7 @@ conf = {
         'pid_shuffle': False,
     },
     "probe_data": {
-        'dataset_path': "/home/projects/data_probe",
+        'dataset_path': "/workspace/projects/GaitSet/data_probe",
         'resolution': '64',
         'dataset': 'CASIA-B',
         # In CASIA-B, data of subject #5 is incomplete.

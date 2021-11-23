@@ -85,22 +85,22 @@ def gallery_load_data():
     # print(gallery_source)
     feature, view, seq_type, label = gallery_source
     # print(label)
-    print("feature:")
+    # print("feature:")
     # print(type(feature))
-    for f in feature:
-        print(f)
+    # for f in feature:
+    #     print(f)
 
     probe_source = m.transform_gallery('probe', opt.batch_size)
     pfeature, pview, pseq_type, plabel = probe_source
-    print("pfeature:")
+    # print("pfeature:")
     # print(type(pfeature))
-    for pf in pfeature:
-        print(pf)
+    # for pf in pfeature:
+    #     print(pf)
 
     # return train_source, test_source
 
     dist = cuda_dist(feature, pfeature)
-    print(dist)
+    # print(dist)
     # print(dist.shape)
     # print(dist < 0.1)  # tensor([[ True], [False], [False], [False], [ True], [ True], [False], [False], [ True],
     # [ True], [ True], [ True]], device='cuda:0')
@@ -112,5 +112,5 @@ def gallery_load_data():
     # print(dist.argmin(0))  # tensor([10], device='cuda:0')
     # print(min_index.cpu().numpy())  # ndarray
 
-
+print(11)
 gallery_load_data()

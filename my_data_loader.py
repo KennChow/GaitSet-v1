@@ -15,6 +15,7 @@ def load_data(dataset_path, resolution, dataset, pid_shuffle, cache=True):
     seq_type = list()
     label = list()
     # print(dataset_path)  # /home/projects/output2
+    print(dataset_path)
     # print(sorted(list(os.listdir(dataset_path))))  # ['001', '002', '003'...]
     for _label in sorted(list(os.listdir(dataset_path))):  # _label：001、002...
         # In CASIA-B, data of subject #5 is incomplete.

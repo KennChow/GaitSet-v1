@@ -9,6 +9,7 @@ import numpy as np
 from warnings import warn
 from time import sleep
 import argparse
+import imageio
 
 from multiprocessing import Pool
 from multiprocessing import TimeoutError as MP_TimeoutError
@@ -25,27 +26,27 @@ def boolean_string(s):
     return s.upper() == 'TRUE'
 
 
-parser = argparse.ArgumentParser(description='Test')
-parser.add_argument('--input_path', default='', type=str,
-                    help='Root path of raw dataset.')
-parser.add_argument('--output_path', default='', type=str,
-                    help='Root path for output.')
-parser.add_argument('--log_file', default='./pretreatment.log', type=str,
-                    help='Log file path. Default: ./pretreatment.log')
-parser.add_argument('--log', default=False, type=boolean_string,
-                    help='If set as True, all logs will be saved. '
-                         'Otherwise, only warnings and errors will be saved.'
-                         'Default: False')
-parser.add_argument('--worker_num', default=1, type=int,
-                    help='How many subprocesses to use for data pretreatment. '
-                         'Default: 1')
-opt = parser.parse_args()
+# parser = argparse.ArgumentParser(description='Test')
+# parser.add_argument('--input_path', default='', type=str,
+#                     help='Root path of raw dataset.')
+# parser.add_argument('--output_path', default='', type=str,
+#                     help='Root path for output.')
+# parser.add_argument('--log_file', default='./pretreatment.log', type=str,
+#                     help='Log file path. Default: ./pretreatment.log')
+# parser.add_argument('--log', default=False, type=boolean_string,
+#                     help='If set as True, all logs will be saved. '
+#                          'Otherwise, only warnings and errors will be saved.'
+#                          'Default: False')
+# parser.add_argument('--worker_num', default=1, type=int,
+#                     help='How many subprocesses to use for data pretreatment. '
+#                          'Default: 1')
+# opt = parser.parse_args()
 
-INPUT_PATH = opt.input_path
-OUTPUT_PATH = opt.output_path
-IF_LOG = opt.log
-LOG_PATH = opt.log_file
-WORKERS = opt.worker_num
+INPUT_PATH = 'data_frame'
+OUTPUT_PATH = 'data_pretreated'
+IF_LOG = False
+LOG_PATH = './pretreatment.log'
+WORKERS = 1
 
 T_H = 64
 T_W = 64
@@ -132,7 +133,14 @@ def cut_pickle(seq_info, pid):
         if img is not None:
             # Save the cut img
             save_path = os.path.join(out_dir, _frame_name)
-            scisc.imsave(save_path, img)
+
+            # f = misc.face()
+            imageio.imsave(save_path, img)
+            # plt.imshow(f)
+            # plt.show()
+
+
+            # scisc.imsave(save_path, img)
             count_frame += 1
     # Warn if the sequence contains less than 5 frames
     if count_frame < 5:
@@ -159,6 +167,7 @@ print('Pretreatment Start.\n'
 
 id_list = os.listdir(INPUT_PATH)
 id_list.sort()
+print(id_list)
 # Walk the input path
 for _id in id_list:
     seq_type = os.listdir(os.path.join(INPUT_PATH, _id))

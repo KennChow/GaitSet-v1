@@ -252,14 +252,14 @@ class Model:
             # print(label)  # ['117']
             # print(batch_frame)  # 60 视频的帧数
             feature, _ = self.encoder(*seq, batch_frame)  # 计算特征向量
-            print("_ 1:")
-            print(_)  # None
+            # print("_ 1:")
+            # print(_)  # None
             cnt += 1
             n, num_bin, _ = feature.size()  # 1 62 256
-            print("_ 2:")
-            print(_)  # 256
-            print(n)  # 1
-            print(num_bin)  # 62
+            # print("_ 2:")
+            # print(_)  # 256
+            # print(n)  # 1
+            # print(num_bin)  # 62
 
             feature_list.append(feature.view(n, -1).data.cpu().numpy())
             view_list += view
@@ -272,6 +272,7 @@ class Model:
         # print(feature_list[0])  # [ [ 0.41196054  0.13108945 -0.44531408 ... -0.23971239] ]
         # print("len(feature_list[0][0])")
         # print(len(feature_list[0][0]))  # 15872
+
         # print("cnt:")
         # print(cnt)  # 5485
         # feature_list: 5485 * 15872

@@ -2,10 +2,10 @@
 <project version="4">
   <component name="PublishConfigData" preserveTimestamps="false" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="zc@192.168.1.102:22">
+      <paths name="215-zc">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" />
+            <mapping deploy="/GaitSet" local="$PROJECT_DIR$" />
             <mapping local="" />
           </mappings>
         </serverdata>

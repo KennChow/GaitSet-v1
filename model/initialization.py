@@ -16,6 +16,8 @@ def initialize_data(config, train=False, test=False):
     train_source, test_source = load_data(**config['data'], cache=(train or test))  # type: DataSet
     gallery_source = None
     # print(train or test)  # False
+    print("train:" + str(train))
+    print("test:" + str(test))
     if train:
         print("Loading training data...")
         train_source.load_all_data()
