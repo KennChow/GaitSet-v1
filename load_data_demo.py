@@ -32,7 +32,7 @@ parser.add_argument('--batch_size', default='1', type=int,
 parser.add_argument('--cache', default=False, type=boolean_string,
                     help='cache: if set as TRUE all the test data will be loaded at once'
                          ' before the transforming start. Default: FALSE')
-parser.add_argument('--probe_data', type=str)
+# parser.add_argument('--probe_data', type=str)
 
 opt = parser.parse_args()
 
@@ -81,19 +81,24 @@ def gallery_load_data():
     # return m, model_param['save_name']
     # initilization()结束
 
+    # print('Loading the model of iteration %d...' % opt.iter)
+    # m.load(opt.iter)
+
     gallery_source = m.transform_gallery('gallery', opt.batch_size)  # test --> np.concatenate(feature_list, 0), view_list, seq_type_list, label_list
     # print(gallery_source)
     feature, view, seq_type, label = gallery_source
-    # print(label)
-    # print("feature:")
-    # print(type(feature))
+    print(label)
+    print("feature:")
+    print(len(feature))
+    print(feature)
     # for f in feature:
     #     print(f)
 
     probe_source = m.transform_gallery('probe', opt.batch_size)
     pfeature, pview, pseq_type, plabel = probe_source
-    # print("pfeature:")
-    # print(type(pfeature))
+    print("pfeature:")
+    print(len(pfeature))
+    print(pfeature)
     # for pf in pfeature:
     #     print(pf)
 
@@ -112,5 +117,5 @@ def gallery_load_data():
     # print(dist.argmin(0))  # tensor([10], device='cuda:0')
     # print(min_index.cpu().numpy())  # ndarray
 
-print(11)
+# print(11)
 gallery_load_data()

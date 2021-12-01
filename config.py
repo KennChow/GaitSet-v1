@@ -12,7 +12,7 @@ conf = {
         # Thus, we ignore it in training.
         # For more detail, please refer to
         # function: utils.data_loader.load_data
-        'pid_num': 73,
+        'pid_num': 73,  # 这里规定了测试集和训练集的边界
         'pid_shuffle': False,
     },
     "gallery_data": {
@@ -23,6 +23,7 @@ conf = {
         # Thus, we ignore it in training.
         # For more detail, please refer to
         # function: utils.data_loader.load_data
+        'pid_num': 73,
         'pid_shuffle': False,
     },
     "probe_data": {

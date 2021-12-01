@@ -111,6 +111,8 @@ def infer(probe_data, data, config):
         # pseq_mask = np.isin(seq_type, probe_seq) & np.isin(view, [probe_view])
         # probe_x = feature[pseq_mask, :]  # 2-D metric  当前探针视频对应的特征向量
         # probe_y = label[pseq_mask]  # 1-D list
+        print(probe_x)
+        print(gallery_x)
 
         dist = cuda_dist(probe_x, gallery_x)  # tensor   找出每行距离最小的
         # print(type(dist))  # <class 'torch.Tensor'>

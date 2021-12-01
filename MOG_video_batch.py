@@ -45,7 +45,7 @@ def MOG(path):  # data_video/125-nm-04-270.mp4
             break
         fgmask = fgbg.apply(frame)
         cnt = cnt + 1
-        if cnt <= 50:
+        if cnt <= 60:
             continue
 
         # 去噪点

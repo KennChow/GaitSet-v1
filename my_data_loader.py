@@ -7,9 +7,10 @@ import numpy as np
 from model.utils.data_set import DataSet
 
 
-def load_data(dataset_path, resolution, dataset, pid_shuffle, cache=True):
+def load_data(dataset_path, resolution, dataset,pid_num, pid_shuffle, cache=True):
     print("cache in data_loader:")
     print(cache)
+    print('pid_num' + str(pid_num))
     seq_dir = list()
     view = list()
     seq_type = list()
@@ -40,20 +41,6 @@ def load_data(dataset_path, resolution, dataset, pid_shuffle, cache=True):
 
     # pid_fname = osp.join('partition', '{}_{}_{}.npy'.format(
     #     dataset, pid_num, pid_shuffle))  # partition/CASIA-B_73_False.npy
-    # # LT:前74个人作为训练集 后50个人作为验证集
-    # if not osp.exists(pid_fname):   # 生成CASIA-B_73_False.npy文件
-    #     pid_list = sorted(list(set(label)))
-    #     if pid_shuffle:
-    #         np.random.shuffle(pid_list)
-    #     pid_list = [pid_list[0:pid_num], pid_list[pid_num:]]
-    #     os.makedirs('partition', exist_ok=True)
-    #     np.save(pid_fname, pid_list)
-    #
-    # pid_list = np.load(pid_fname, allow_pickle=True)
-    # # [list(['001', '002', '003', '004', '006', ... '074'])
-    # #  list(['075', '076',...'123', '124'])]
-    # train_list = pid_list[0]
-    # test_list = pid_list[1]
     pid_list = sorted(list(set(label)))
     gallery_list = pid_list
     gallery_source = DataSet(
@@ -62,29 +49,17 @@ def load_data(dataset_path, resolution, dataset, pid_shuffle, cache=True):
         [seq_type[i] for i, l in enumerate(label) if l in gallery_list],
         [view[i] for i, l in enumerate(label) if l in gallery_list],
         cache, resolution)
-    aaa = [seq_dir[i] for i, l in enumerate(label) if l in gallery_list]
-    print("aaa:")
-    print(aaa)  # ['/home/projects/data_test/125/nm-01/072']
-    # train_source = DataSet(
-    #     [seq_dir[i] for i, l in enumerate(label) if l in train_list],
-    #     [label[i] for i, l in enumerate(label) if l in train_list],
-    #     [seq_type[i] for i, l in enumerate(label) if l in train_list],
-    #     [view[i] for i, l in enumerate(label) if l in train_list],
-    #     cache, resolution)
-    # test_source = DataSet(
-    #     [seq_dir[i] for i, l in enumerate(label) if l in test_list],
-    #     [label[i] for i, l in enumerate(label) if l in test_list],
-    #     [seq_type[i] for i, l in enumerate(label) if l in test_list],
-    #     [view[i] for i, l in enumerate(label) if l in test_list],
-    #     cache, resolution)
-    # seq_dir_probe = '/home/projects/data_test'
     # probe_source = DataSet(
     #     [seq_dir[i] for i, l in enumerate(label) if l in gallery_list],
     #     [label[i] for i, l in enumerate(label) if l in gallery_list],
     #     [seq_type[i] for i, l in enumerate(label) if l in gallery_list],
     #     [view[i] for i, l in enumerate(label) if l in gallery_list],
     #     cache, resolution)
-
+    aaa = [seq_dir[i] for i, l in enumerate(label) if l in gallery_list]
+    print("aaa:")
+    for i in aaa:
+        print(i)
+    # print(aaa)  # ['/home/projects/data_test/125/nm-01/072']
     print("测试集数量：" + str(len(gallery_source)))  # 5485
     # print(type(test_source))  # <class 'model.utils.data_set.DataSet'>
     return gallery_source  # , probe_source

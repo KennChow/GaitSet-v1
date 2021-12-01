@@ -13,6 +13,7 @@ from .model import Model
 
 def initialize_data(config, train=False, test=False):
     print("Initializing data source...")
+    print("cache:" + str((train or test)))
     train_source, test_source = load_data(**config['data'], cache=(train or test))  # type: DataSet
     gallery_source = None
     # print(train or test)  # False
@@ -36,6 +37,7 @@ def initialize_model(config, train_source, test_source, gallery_source):
     model_param['train_source'] = train_source  # type: DataSet
     model_param['test_source'] = test_source  # type: DataSet
     model_param['gallery_source'] = gallery_source  # type: DataSet
+    # model_param['probe_source'] = probe_source  # type: DataSet
     model_param['train_pid_num'] = data_config['pid_num']
     batch_size = int(np.prod(model_config['batch_size']))
     model_param['save_name'] = '_'.join(map(str,[
